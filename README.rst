@@ -23,6 +23,9 @@ Uses A-Za-z0-9 with the exception of I, i and 1.
 
 Requires user to be logged in for link creation.
 
+Additional Contributors
+-----------------------
+Carlo Oliva - SureHire Inc.
 
 Usage
 -----
