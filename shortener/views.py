@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from shortener import shortener
+from django.conf import settings
 
 
-# Create your views here.
 def test(request, link):
     if request.user.is_authenticated:
         data = shortener.create(request.user, link)
@@ -15,6 +15,7 @@ def test(request, link):
 def expand(request, link):
     try:
         link = shortener.expand(link)
-        return redirect(link)  # TODO: permanent=True
+        full_path = '{}/{}'.format(settings.DATABASE_SITE, link)
+        return redirect(full_path)
     except Exception as e:
-        return HttpResponse(e.args)
+        raise Http404(e)
