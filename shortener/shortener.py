@@ -7,9 +7,9 @@ from django.utils import timezone
 import random
 
 
-def get_random(tries=0):
+def get_random(extra_char=0):
     length = getattr(settings, 'SHORTENER_LENGTH', 5)
-    length += tries
+    length += extra_char
 
     # Removed l, I, 1
     dictionary = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz234567890"
@@ -55,16 +55,17 @@ def create(user, link):
         if UrlMap.objects.filter(user=user, date_expired__gt=timezone.now()).count() >= max_concurrent:
             raise PermissionError("concurrent quota exceeded")
 
-    # Try up to three times to generate a random number without duplicates.
-    # Each time increase the number of allowed characters
-    for tries in range(3):
-        try:
-            short = get_random(tries)
-            m = UrlMap(user=user, full_url=link, short_url=short, max_count=max_uses, date_expired=expiry_date)
-            m.save()
-            return m.short_url
-        except IntegrityError:
-            continue
+    # Try up to MAX_SHORT_LINK_CREATION_TRIES times to generate a random number 
+    # without duplicates. If it doesn't work, increase the number of allowed characters 3 times.
+    for extra_chars in range(3):
+        for tries in range(getattr(settings, 'MAX_SHORT_LINK_CREATION_TRIES', 20)):
+            try:
+                short = get_random(extra_chars)
+                m = UrlMap(user=user, full_url=link, short_url=short, max_count=max_uses, date_expired=expiry_date)
+                m.save()
+                return m.short_url
+            except IntegrityError:
+                continue
 
     raise KeyError("Could not generate unique shortlink")
 

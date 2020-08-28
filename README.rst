@@ -26,6 +26,7 @@ Requires user to be logged in for link creation.
 Additional Contributors
 -----------------------
 Carlo Oliva - SureHire Inc.
+Storm Kaefer - SureHire Inc.
 
 Usage
 -----
