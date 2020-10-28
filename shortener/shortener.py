@@ -41,9 +41,9 @@ def create(user, link):
 
     # Expiry date, -1 to disable
     if lifespan != -1:
-        expiry_date = datetime.now() + timedelta(seconds=lifespan)
+        expiry_date = timezone.now() + timedelta(seconds=lifespan)
     else:
-        expiry_date = datetime.max
+        expiry_date = datetime.max.replace(tzinfo=timezone.utc)
 
     # Ensure user has not met max_urls quota
     if max_urls != -1:
@@ -55,7 +55,7 @@ def create(user, link):
         if UrlMap.objects.filter(user=user, date_expired__gt=timezone.now()).count() >= max_concurrent:
             raise PermissionError("concurrent quota exceeded")
 
-    # Try up to MAX_SHORT_LINK_CREATION_TRIES times to generate a random number 
+    # Try up to MAX_SHORT_LINK_CREATION_TRIES times to generate a random number
     # without duplicates. If it doesn't work, increase the number of allowed characters 3 times.
     for extra_chars in range(3):
         for tries in range(getattr(settings, 'MAX_SHORT_LINK_CREATION_TRIES', 20)):
@@ -84,7 +84,7 @@ def expand(link):
     # ensure we are within allowed datetime
     # print(timezone.now())
     # print(url.date_expired)
-    if datetime.now() > url.date_expired:
+    if timezone.now() > url.date_expired:
         raise PermissionError("shortlink expired")
 
     url.usage_count += 1

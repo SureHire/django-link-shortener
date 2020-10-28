@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: django-link-shortener
-Version: 0.4
+Version: 0.4.1
 Summary: A simple Django Url Shortener.
 Home-page: https://github.com/ronaldgrn/django-link-shortener
 Author: Petronald Green
