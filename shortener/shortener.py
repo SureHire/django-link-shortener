@@ -16,7 +16,7 @@ def get_random(extra_char=0):
     return ''.join(random.choice(dictionary) for _ in range(length))
 
 
-def create(user, link):
+def create(user, link, seconds_until_expiration=None):
     # check if user allowed to save link
     try:
         # use user settings where set
@@ -34,6 +34,10 @@ def create(user, link):
         max_concurrent = getattr(settings, 'SHORTENER_MAX_CONCURRENT', -1)
         lifespan = getattr(settings, 'SHORTENER_LIFESPAN', -1)
         max_uses = getattr(settings, 'SHORTENER_MAX_USES', -1)
+        
+    if seconds_until_expiration:
+        # Overwrites the default lifespan, always
+        lifespan = seconds_until_expiration
 
     # Ensure User is allowed to create
     if not enabled:
