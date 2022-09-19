@@ -2,9 +2,9 @@
 django-link-shortener
 =====================
 
-.. image:: https://travis-ci.org/ronaldgrn/django-link-shortener.svg?branch=master
-    :target: https://travis-ci.org/ronaldgrn/django-link-shortener
-    
+.. image:: https://github.com/ronaldgrn/django-link-shortener/actions/workflows/django-tests.yml/badge.svg
+    :target: https://github.com/ronaldgrn/django-link-shortener/actions/workflows/django-tests.yml
+
 .. image:: https://img.shields.io/pypi/l/django-link-shortener.svg
     :alt: PyPI - License
     :target: https://pypi.org/project/django-link-shortener/
@@ -33,14 +33,14 @@ Usage
     
 1. pip install django-link-shortener
    
-2. Add "shortener" to your INSTALLED_APPS setting like this::
+2. Add '`shortener'` to your INSTALLED_APPS setting::
 
     INSTALLED_APPS = [
         ...
         'shortener',
     ]
 
-3. Include the polls URLconf in your project urls.py like this::
+3. Include `shortener.urls` in your project urls.py::
 
     path('s/', include('shortener.urls')),
 
@@ -105,7 +105,7 @@ SHORTENER_LENGTH
   
   Sets how many digits should be used for links. 
   Tries up to three times to generate a unique shortcode where
-  Each failure will result in length temporaily being increased by 1.
+  Each failure will result in length temporarily being increased by 1.
 
 SHORTENER_ENABLE_TEST_PATH
   Default: False
@@ -142,6 +142,12 @@ Internal temporary link usage (such as on nodeferret.com). 100 Temp links per mi
 Changelog
 ---------
 
+**v0.5**
+
+- Replaced NullBooleanField with BooleanField (Credit: sen-den)
+- Replaced travis-ci with github actions
+
+
 **v0.4**
 
 - Allow null values in UrlProfile; null fields will use global values
@@ -149,12 +155,13 @@ Changelog
 - add user to str representation of UrlMap
 - removed 256 char limit on full_url (Credit: Khaeshah)
 
+
 Upgrade Instructions
 --------------------
 
-**0.3 -> 0.4**
+**0.3 / 0.4 --> 0.5**
 
 ::
 
-  pip install django-link-shortener==0.4
+  pip install django-link-shortener==0.5
   python manage.py migrate
