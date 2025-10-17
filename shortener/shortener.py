@@ -47,7 +47,7 @@ def create(user, link, seconds_until_expiration=None):
     if lifespan != -1:
         expiry_date = timezone.now() + timedelta(seconds=lifespan)
     else:
-        expiry_date = datetime.max.replace(tzinfo=timezone.utc)
+        expiry_date = datetime.max.replace(tzinfo=datetime.timezone.utc)
 
     # Ensure user has not met max_urls quota
     if max_urls != -1:
